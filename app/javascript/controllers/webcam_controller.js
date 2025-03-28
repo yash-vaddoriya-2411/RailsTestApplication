@@ -76,30 +76,5 @@ export default class extends Controller {
         this.previewTarget.style.display = "none";
         this.start();
     }
-
-    capture() {
-        if (!this.webcamStarted) return;
-
-        Webcam.snap((data_uri) => {
-            console.log("Captured Image URI:", data_uri);  // Debugging output
-
-            // Hide the camera, show the captured image
-            this.cameraTarget.style.display = "none";
-            this.previewTarget.src = data_uri;
-            this.previewTarget.style.display = "block";
-
-            // Store image data in the hidden input field
-            this.imageDataTarget.value = data_uri;
-
-            // Stop webcam after capturing
-            Webcam.reset();
-            this.webcamStarted = false;
-
-            // Hide "Take Snapshot" button, show "Retake" button
-            this.snapshotTarget.style.display = "none";
-            this.retakeTarget.style.display = "block";
-        });
-    }
-
 }
 
