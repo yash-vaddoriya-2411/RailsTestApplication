@@ -11,15 +11,15 @@ class InvoicesController < ApplicationController
 
   def create
     ActiveRecord::Base.transaction do
-      @check = Check.create!(check_params)  # Create Check first
+      @check = Check.create(check_params)  # Create Check first
 
       invoice_numbers = params[:invoice][:number].split(",").map(&:strip)  # Extract multiple invoice numbers
 
       invoice_numbers.each do |number|
-        invoice = Invoice.create!(number: number, company_id: @check.company_id)  # Create Invoice
+        invoice = Invoice.create(number: number, company_id: @check.company_id)  # Create Invoice
 
         # Link the check with each invoice
-        CheckInvoice.create!(check_id: @check.id, invoice_id: invoice.id)
+        CheckInvoice.create(check_id: @check.id, invoice_id: invoice.id)
       end
 
       if params[:check][:image].present?

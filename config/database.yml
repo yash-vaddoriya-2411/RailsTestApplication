@@ -2,37 +2,29 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  host: localhost
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
 development:
   <<: *default
-  host: <%= Rails.application.credentials.dig(:database, :rta_host) %>
-  database: <%= Rails.application.credentials.dig(:database, :rta_db) %>
-  username: <%= Rails.application.credentials.dig(:database, :rta_username) %>
-  password: <%= Rails.application.credentials.dig(:database, :rta_password) %>
+  host: <%= Rails.application.credentials.dig(:database, :rta_host) || "localhost" %>
+  database: <%= Rails.application.credentials.dig(:database, :rta_db) || "RailsTestApplication_dev" %>
+  username: <%= Rails.application.credentials.dig(:database, :rta_username) || "your_username" %>
+  password: <%= Rails.application.credentials.dig(:database, :rta_password) || "your_password" %>
 
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
 test:
   <<: *default
   database: RailsTestApplication_test
-  username:
-  password:
+  username: "your_test_username"
+  password: "your_test_password"
 
 production:
   primary: &primary_production
-    adapter: postgresql
-    encoding: unicode
-    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-    database: <%= ENV["RENDER_DB_NAME"] %>
-    username: <%= ENV["RENDER_DB_USERNAME"] %>
-    password: <%= ENV["RENDER_DB_PASSWORD"] %>
-    host: <%= ENV["DB_HOST"] %> # Ensure this is set in Render
-    port: <%= ENV.fetch("DB_PORT", 5432) %> # Default to 5432
-
+    <<: *default
+    host: <%= Rails.application.credentials.dig(:database, :rta_host) %>
+    database: <%= Rails.application.credentials.dig(:database, :rta_db) %>
+    username: <%= Rails.application.credentials.dig(:database, :rta_username) %>
+    password: <%= Rails.application.credentials.dig(:database, :rta_password) %>
 
   cache:
     <<: *primary_production
