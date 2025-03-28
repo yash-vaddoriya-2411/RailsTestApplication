@@ -3,12 +3,19 @@
 <%= form_with model: [@invoice, @check], url: invoices_path, local: true, html: { multipart: true, data: { controller: "webcam" } } do |f| %>
   <div data-controller="webcam">
     <img id="preview" data-webcam-target="preview" style="display: none; width: 320px; height: 240px; margin-top: 10px;">
+
+    <!-- File input to trigger the mobile camera app -->
+    <input type="file" id="cameraInput" accept="image/*" capture="environment"
+           style="display: none;" data-webcam-target="cameraInput">
+
     <div id="my_camera" data-webcam-target="camera"></div>
 
+    <!-- Button to open camera -->
     <button class="btn btn-primary" type="button" id="start-webcam"
-            data-action="click->webcam#start"
+            data-action="click->webcam#openCamera"
             data-webcam-target="start">Capture Image</button>
 
+    <!-- Hidden buttons -->
     <button class="btn btn-success" type="button" id="take-snapshot"
             data-action="click->webcam#capture"
             data-webcam-target="snapshot" style="display: none;">Take Snapshot</button>
@@ -17,10 +24,9 @@
             data-action="click->webcam#retake"
             data-webcam-target="retake" style="display: none;">Retake</button>
 
-
     <input type="hidden" name="check[image]" id="image-data" data-webcam-target="imageData" required>
-
   </div>
+
 
 
   <label>Invoice Number</label>
