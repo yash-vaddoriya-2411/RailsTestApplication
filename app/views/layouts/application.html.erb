@@ -8,51 +8,22 @@
   <%= stylesheet_link_tag "application", media: "all" %>
   <%= javascript_importmap_tags %>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
-
-
-  <style>
-      /* Sticky Navbar Styling */
-      .navbar {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          background-color: #333;
-          padding: 10px 0;
-          z-index: 1000;
-      }
-
-      .navbar a {
-          color: white;
-          padding: 10px 15px;
-          text-decoration: none;
-      }
-
-      .navbar a:hover {
-          background-color: #555;
-      }
-
-      .content {
-          margin-top: 50px; /* To avoid content getting hidden under navbar */
-          padding: 20px;
-      }
-  </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
-    <%= javascript_importmap_tags %>
 </head>
 <body>
 
-  <div class="navbar">
-    <%= link_to "Capture", new_invoice_path, class: "nav-link" %>
-    <%= link_to "Checks", checks_path, class: "nav-link" %>
-    <%= link_to "Invoices", invoices_path, class: "nav-link" %>
-    <%= link_to "Companies", companies_path, class: "nav-link" %>
-  </div>
+  <div class="navbar navbar-light" data-bs-theme="light">
+  <div class="container-fluid">
+    <%= link_to "Capture", new_invoice_path, class: "nav-link col-xxl-3" %>
+    <%= link_to "Checks", checks_path, class: "nav-link col-xxl-3" %>
+    <%= link_to "Invoices", invoices_path, class: "nav-link col-xxl-3" %>
+    <%= link_to "Companies", companies_path, class: "nav-link col-xxl-3" %>
+    </div>
+  </div>  
   <% if notice.present? %>
     <p style="color: green; font-weight: bold;"><%= notice %></p>
   <% end %>
   <!-- Page Content -->
-  <div class="content">
+  <div class="container ">
     <%= yield %>
   </div>
 </body>
