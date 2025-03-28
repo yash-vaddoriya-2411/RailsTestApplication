@@ -1,0 +1,47 @@
+# PostgreSQL. Versions 9.3 and up are supported.
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: localhost
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+
+development:
+  <<: *default
+  host: <%= Rails.application.credentials.dig(:database, :rta_host) %>
+  database: <%= Rails.application.credentials.dig(:database, :rta_db) %>
+  username: <%= Rails.application.credentials.dig(:database, :rta_username) %>
+  password: <%= Rails.application.credentials.dig(:database, :rta_password) %>
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: RailsTestApplication_test
+  username:
+  password:
+
+production:
+  primary: &primary_production
+    adapter: postgresql
+    encoding: unicode
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+    database: <%= ENV["RENDER_DB_NAME"] %>
+    username: <%= ENV["RENDER_DB_USERNAME"] %>
+    password: <%= ENV["RENDER_DB_PASSWORD"] %>
+    host: <%= ENV["DB_HOST"] %> # Ensure this is set in Render
+    port: <%= ENV.fetch("DB_PORT", 5432) %> # Default to 5432
+
+
+  cache:
+    <<: *primary_production
+    migrations_paths: db/cache_migrate
+
+  queue:
+    <<: *primary_production
+    migrations_paths: db/queue_migrate
+
+  cable:
+    <<: *primary_production
+    migrations_paths: db/cable_migrate

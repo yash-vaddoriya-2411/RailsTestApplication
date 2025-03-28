@@ -1,0 +1,24 @@
+<table class="table table-bordered table-striped table-hover">
+  <thead class="table-dark">
+  <tr>
+    <th>Invoice</th>
+    <th>Company</th>
+    <th>Check Number</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% if @invoices.present? %>
+    <% @invoices.each do |invoice| %>
+      <tr>
+        <td><%= invoice.number %></td>
+        <td><%= invoice.company.name %></td>
+        <td><%= invoice.checks.pluck(:number).join(", ") || 'No Check' %></td>
+      </tr>
+    <% end %>
+  <% else %>
+    <tr>
+      <td colspan="3" class="text-center text-danger fw-bold">No records found</td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

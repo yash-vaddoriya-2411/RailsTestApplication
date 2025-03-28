@@ -1,0 +1,48 @@
+<%= javascript_include_tag "check", defer: true %>
+
+
+<table class="table table-bordered table-striped table-hover">
+  <thead class="table-dark">
+  <tr>
+    <th>Date</th>
+    <th>Company</th>
+    <th>Check Number</th>
+    <th>Invoices</th>
+    <th>Image</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% if @checks.present? %>
+    <% @checks.each do |check| %>
+      <tr>
+        <td><%= check.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+        <td><%= check.company.name %></td>
+        <td><%= check.number %></td>
+        <td><%= check.invoices.pluck(:number).join(", ") %></td>
+        <!-- Table Data (Button to Open Modal) -->
+        <td>
+          <% if check.image.attached? %>
+            <button class="btn btn-primary" onclick="openModal('<%= url_for(check.image) %>')">View Image</button>
+          <% else %>
+            <span class="text-muted">No Image</span>
+          <% end %>
+        </td>
+
+        <!-- Full-Screen Image Modal -->
+        <div id="imageModal" class="modal">
+          <span class="close" onclick="closeModal()">&times;</span>
+          <img class="modal-content" id="fullImage">
+        </div>
+
+      </tr>
+    <% end %>
+  <% else %>
+    <tr>
+      <td colspan="5" class="text-center text-danger fw-bold">No records found</td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+
+
