@@ -7,6 +7,8 @@
 
   <%= stylesheet_link_tag "application", media: "all" %>
   <%= javascript_importmap_tags %>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
+
 
   <style>
       /* Sticky Navbar Styling */
@@ -35,16 +37,20 @@
           padding: 20px;
       }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
+    <%= javascript_importmap_tags %>
 </head>
 <body>
-<!-- Sticky Navbar -->
+
   <div class="navbar">
     <%= link_to "Capture", new_invoice_path, class: "nav-link" %>
     <%= link_to "Checks", checks_path, class: "nav-link" %>
     <%= link_to "Invoices", invoices_path, class: "nav-link" %>
     <%= link_to "Companies", companies_path, class: "nav-link" %>
   </div>
-
+  <% if notice.present? %>
+    <p style="color: green; font-weight: bold;"><%= notice %></p>
+  <% end %>
   <!-- Page Content -->
   <div class="content">
     <%= yield %>
