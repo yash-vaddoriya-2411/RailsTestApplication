@@ -1,6 +1,5 @@
 <%= javascript_include_tag "check", defer: true %>
-
-
+<%= stylesheet_link_tag "check" %>
 <table class="table table-bordered table-striped table-hover">
   <thead class="table-dark">
   <tr>
@@ -15,11 +14,10 @@
   <% if @checks.present? %>
     <% @checks.each do |check| %>
       <tr>
-        <td><%= check.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+        <td><%= check.created_at.in_time_zone("Asia/Kolkata").strftime("%Y-%m-%d %I:%M:%S %p") %></td>
         <td><%= check.company.name %></td>
         <td><%= check.number %></td>
         <td><%= check.invoices.pluck(:number).join(", ") %></td>
-        <!-- Table Data (Button to Open Modal) -->
         <td>
           <% if check.image.attached? %>
             <button class="btn btn-primary" onclick="openModal('<%= url_for(check.image) %>')">View Image</button>
@@ -27,13 +25,6 @@
             <span class="text-muted">No Image</span>
           <% end %>
         </td>
-
-        <!-- Full-Screen Image Modal -->
-        <div id="imageModal" class="modal">
-          <span class="close" onclick="closeModal()">&times;</span>
-          <img class="modal-content" id="fullImage">
-        </div>
-
       </tr>
     <% end %>
   <% else %>
@@ -44,5 +35,10 @@
   </tbody>
 </table>
 
-
-
+<!-- Image Modal -->
+<div id="imageModal" class="modal">
+  <div class="modal-content">
+    <img id="fullImage" src="" alt="Enlarged image">
+    <button class="close" onclick="closeModal()">×</button>
+  </div>
+</div>
