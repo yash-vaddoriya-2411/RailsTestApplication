@@ -18,11 +18,14 @@
     <%= link_to "Invoices", invoices_path, class: "nav-link col-xxl-3" %>
     <%= link_to "Companies", companies_path, class: "nav-link col-xxl-3" %>
     </div>
-  </div>  
-  <% if notice.present? %>
-    <p style="color: green; font-weight: bold;"><%= notice %></p>
+  </div>
+  <% flash.each do |type, message| %>
+      <p style="color: <%= type == 'notice' ? 'green' : 'red' %>; font-weight: bold;">
+        <%= message %>
+      </p>
   <% end %>
-  <!-- Page Content -->
+
+<!-- Page Content -->
   <div class="container ">
     <%= yield %>
   </div>

@@ -1,19 +1,10 @@
-function openModal(imageUrl) {
-    let modal = document.getElementById("imageModal");
-    let fullImage = document.getElementById("fullImage");
-
-    fullImage.src = imageUrl;
-    modal.style.display = "flex";
+// Function to open the modal and display the clicked image
+function openModal(imageSrc) {
+    document.getElementById('fullImage').src = imageSrc;
+    document.getElementById('imageModal').style.display = 'flex';
 }
 
+// Function to close the modal
 function closeModal() {
-    document.getElementById("imageModal").style.display = "none";
+    document.getElementById('imageModal').style.display = 'none';
 }
-
-// Close modal when clicking outside the image
-window.onclick = function(event) {
-    let modal = document.getElementById("imageModal");
-    if (event.target === modal) {
-        closeModal();
-    }
-};
