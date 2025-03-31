@@ -17,25 +17,16 @@
 
         <!-- Capture Button & Image Side by Side -->
         <div class="d-flex align-items-center justify-content-center mt-3">
-          <!-- Button for Desktop -->
           <%= button_tag "Capture Image",
                          class: "btn btn-outline-dark fw-bold px-4 py-3 border-3",
                          type: "button",
                          id: "captureBtn",
                          data: { action: "click->webcam#toggleCamera", webcam_target: "captureBtn" } %>
 
-          <!-- File Input for Mobile -->
-          <input type="file" accept="image/*" capture="environment"
-                 id="fileInput"
-                 data-action="change->webcam#handleFileInput"
-                 data-webcam-target="fileInput"
-                 class="form-control"
-                 style="display: none;">
-
-          <!-- Image Preview -->
+          <!-- Captured Image Preview -->
           <img id="preview"
                data-webcam-target="preview"
-               class="rounded border shadow">
+               class="rounded border shadow" >
         </div>
 
         <%= hidden_field_tag "check[image]", "", id: "image-data", data: { webcam_target: "imageData" }, required: true %>
@@ -59,7 +50,7 @@
 
       <div class="mb-3">
         <label class="form-label">Check Number</label>
-        <%= f.text_field :check_number,
+        <%= f.number_field :check_number,
                          name: "check[number]",
                          placeholder: "Enter Check Number",
                          required: true,
@@ -73,8 +64,8 @@
                        type: "submit" %>
 
         <!-- Loader -->
-        <div id="loading-spinner" class="spinner-border text-success" role="status" 
-            style="display: none; position: absolute; top: 50%; left: 50%;">
+        <div id="loading-spinner" class="spinner-border text-success" role="status"
+             style="display: none; position: absolute; top: 50%; left: 50%;">
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>

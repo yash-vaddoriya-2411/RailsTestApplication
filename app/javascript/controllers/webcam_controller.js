@@ -1,23 +1,25 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-    static targets = ["video", "canvas", "captureBtn", "preview", "imageData", "fileInput"]
+    static targets = ["video", "canvas", "captureBtn", "preview", "imageData"];
 
     connect() {
         console.log("Webcam Stimulus controller connected.");
         this.cameraOpen = false;
-
-        if (this.isMobile()) {
-            this.fileInputTarget.style.display = "block"; // Show file input on mobile
-            this.captureBtnTarget.style.display = "none"; // Hide webcam button
-        } else {
-            this.fileInputTarget.style.display = "none"; // Hide file input on desktop
-            this.captureBtnTarget.style.display = "block"; // Show webcam button
-        }
     }
 
     async toggleCamera() {
-        if (!this.isMobile()) {
+        if (this.isMobile()) {
+            // Open mobile camera app directly using an intent
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = "image/*";
+            input.capture = "environment"; // Open rear camera (change to "user" for front camera)
+
+            input.addEventListener("change", (event) => this.handleFileInput(event));
+            input.click();
+        } else {
+            // Open desktop webcam
             if (!this.cameraOpen) {
                 await this.startCamera();
             } else {
@@ -30,7 +32,7 @@ export default class extends Controller {
         try {
             const constraints = {
                 video: {
-                    facingMode: "user",
+                    facingMode: "user", // Front camera for desktop
                     width: { ideal: 540 },
                     height: { ideal: 720 }
                 }
@@ -43,7 +45,6 @@ export default class extends Controller {
             this.captureBtnTarget.textContent = "Capture Image";
 
             this.cameraOpen = true;
-
         } catch (error) {
             console.error("Error accessing camera:", error);
             alert("Could not access the camera. Allow camera access in your browser settings.");
@@ -58,7 +59,7 @@ export default class extends Controller {
 
         const imageData = this.canvasTarget.toDataURL("image/jpeg");
         this.previewTarget.src = imageData;
-        this.imageDataTarget.value = imageData;
+        this.imageDataTarget.value = imageData; // Store in hidden field
 
         this.previewTarget.style.display = "block";
         this.videoTarget.style.display = "none";
@@ -75,7 +76,7 @@ export default class extends Controller {
             const reader = new FileReader();
             reader.onload = (e) => {
                 this.previewTarget.src = e.target.result;
-                this.imageDataTarget.value = e.target.result;
+                this.imageDataTarget.value = e.target.result; // Store in hidden field
                 this.previewTarget.style.display = "block";
             };
             reader.readAsDataURL(file);
