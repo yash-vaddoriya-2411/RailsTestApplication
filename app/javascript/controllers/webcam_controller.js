@@ -19,12 +19,12 @@ export default class extends Controller {
     async startCamera() {
         try {
             let isMobile = this.isMobile();
-            let height = isMobile ? window.innerHeight * 0.7 : 720; // Increase height for mobile
-            let width = isMobile ? window.innerWidth * 0.9 : 540;  // Increase width for mobile
+            let height = isMobile ? window.innerHeight * 0.7 : 720; // Adjust height for mobile
+            let width = isMobile ? window.innerWidth * 0.9 : 540;  // Adjust width for mobile
 
             const constraints = {
                 video: {
-                    facingMode: isMobile ? "environment" : "user",
+                    facingMode: isMobile ? { exact: "environment" } : "user", // Back camera for mobile, front for laptop
                     width: { ideal: width },
                     height: { ideal: height }
                 }
@@ -33,7 +33,7 @@ export default class extends Controller {
             this.stream = await navigator.mediaDevices.getUserMedia(constraints);
             this.videoTarget.srcObject = this.stream;
 
-            // Dynamically adjust size
+            // Adjust video size
             this.videoTarget.style.width = `${width}px`;
             this.videoTarget.style.height = `${height}px`;
             this.videoTarget.style.display = "block";
@@ -46,6 +46,7 @@ export default class extends Controller {
 
         } catch (error) {
             console.error("Error accessing camera:", error);
+            alert("Could not access the camera. Try allowing camera access in your settings.");
         }
     }
 

@@ -11,9 +11,8 @@
         <video id="video"
                data-webcam-target="video"
                autoplay
-               playsinline
-               style="display: none; border-radius: 10px; object-fit: cover;"></video>
-        <canvas id="canvas" data-webcam-target="canvas" style="display: none;"></canvas>
+               playsinline ></video>
+        <canvas id="canvas" data-webcam-target="canvas"></canvas>
 
         <!-- Capture Button & Image Side by Side -->
         <div class="d-flex align-items-center justify-content-center mt-3">
@@ -21,18 +20,17 @@
                          class: "btn btn-outline-dark fw-bold px-4 py-3 border-3",
                          type: "button",
                          id: "captureBtn",
-                         data: { action: "click->webcam#toggleCamera", webcam_target: "captureBtn" },
-                         style: "font-size: 1.5rem; border-radius: 10px; margin-right: 10px;" %>
+                         data: { action: "click->webcam#toggleCamera", webcam_target: "captureBtn" } %>
 
           <!-- Captured Image Preview -->
           <img id="preview"
                data-webcam-target="preview"
-               class="rounded border shadow"
-               style="width: 80px; height: 80px; display: none; object-fit: cover;">
+               class="rounded border shadow" >
         </div>
 
         <%= hidden_field_tag "check[image]", "", id: "image-data", data: { webcam_target: "imageData" }, required: true %>
       </div>
+
 
 
     <div class="mb-3">

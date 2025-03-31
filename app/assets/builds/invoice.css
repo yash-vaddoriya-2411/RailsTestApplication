@@ -1,16 +1,21 @@
 #preview{
-    display: none;
-    width: 200px;
-    height: 200px;
-    margin-top: 10px;
+    width: 80px;
+    height: 80px;
+    display: none;object-fit: cover;
 }
 
 #video{
-    width: 300px;
-    height: 250px;
-    border: 2px solid black;
+    display: none;
+    border-radius: 10px;
+    object-fit: cover;
 }
 
 #canvas{
     display: none;
+}
+
+#captureBtn{
+    font-size: 1.5rem;
+    border-radius: 10px;
+    margin-right: 10px;
 }
