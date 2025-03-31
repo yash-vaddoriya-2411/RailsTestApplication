@@ -52,7 +52,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_28_043253) do
   end
 
   create_table "checks", force: :cascade do |t|
-    t.integer "number", null: false
+    t.bigint "number", null: false
     t.bigint "company_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -68,7 +68,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_28_043253) do
   end
 
   create_table "invoices", force: :cascade do |t|
-    t.integer "number", null: false
+    t.bigint "number", null: false
     t.bigint "company_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
