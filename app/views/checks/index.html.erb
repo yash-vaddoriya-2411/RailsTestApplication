@@ -1,4 +1,4 @@
-<%= javascript_include_tag "check", defer: true %>
+<%= javascript_include_tag "imageModel", defer: true %>
 <%= stylesheet_link_tag "check" %>
 <table class="table table-bordered table-striped table-hover">
   <thead class="table-dark">
@@ -20,7 +20,10 @@
         <td><%= check.invoices.pluck(:number).join(", ") %></td>
         <td>
           <% if check.image.attached? %>
-            <button class="btn btn-primary" onclick="openModal('<%= url_for(check.image) %>')">View Image</button>
+            <button class="btn btn-primary"
+                    onclick="openModal('<%= url_for(check.image.variant(resize_to_limit: [300, 300])) %>')">
+              -->
+            </button>
           <% else %>
             <span class="text-muted">No Image</span>
           <% end %>

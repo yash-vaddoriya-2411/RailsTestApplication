@@ -1,0 +1,10 @@
+<div class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <nav class="nav nav-tabs w-100 justify-content-around">
+      <%= link_to "Capture", new_invoice_path, class: "nav-link #{'active' if controller_name == 'invoices' && action_name == 'new'}" %>
+      <%= link_to "Checks", checks_path, class: "nav-link #{'active' if controller_name == 'checks'}" %>
+      <%= link_to "Invoices", invoices_path, class: "nav-link #{'active' if controller_name == 'invoices' && action_name != 'new'}" %>
+      <%= link_to "Companies", companies_path, class: "nav-link #{'active' if controller_name == 'companies'}" %>
+    </nav>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+#preview{
+    display: none;
+    width: 480px;
+    height: 720px;
+    margin-top: 10px;
+}
+
+#video{
+    width: 320px;
+    height: 240px;
+    border: 2px solid black;
+}
+
+#canvas{
+    display: none;
+}
