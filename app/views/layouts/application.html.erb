@@ -13,12 +13,19 @@
 <body>
 
   <%= render "layouts/navbar" %>
-  <% if flash[:notice] %>
-    <div class="alert alert-success"><%= flash[:notice] %></div>
+  <% if notice %>
+    <div class="alert alert-success" role="alert">
+      <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+      <%= notice %>
+    </div>
   <% end %>
-
-  <% if flash[:alert] %>
-    <div class="alert alert-danger"><%= flash[:alert] %></div>
+  <% if alert %>
+    <div class="alert alert-danger" role="alert">
+      <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+      <%= alert %>
+    </div>
   <% end %>
 
 <!-- Page Content -->
