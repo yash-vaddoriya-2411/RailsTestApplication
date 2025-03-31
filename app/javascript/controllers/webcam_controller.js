@@ -1,44 +1,44 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-    static targets = ["video", "canvas", "captureBtn", "preview", "imageData"]
+    static targets = ["video", "canvas", "captureBtn", "preview", "imageData", "fileInput"]
 
     connect() {
         console.log("Webcam Stimulus controller connected.");
         this.cameraOpen = false;
+
+        if (this.isMobile()) {
+            this.fileInputTarget.style.display = "block"; // Show file input on mobile
+            this.captureBtnTarget.style.display = "none"; // Hide webcam button
+        } else {
+            this.fileInputTarget.style.display = "none"; // Hide file input on desktop
+            this.captureBtnTarget.style.display = "block"; // Show webcam button
+        }
     }
 
     async toggleCamera() {
-        if (!this.cameraOpen) {
-            await this.startCamera();
-        } else {
-            this.captureImage();
+        if (!this.isMobile()) {
+            if (!this.cameraOpen) {
+                await this.startCamera();
+            } else {
+                this.captureImage();
+            }
         }
     }
 
     async startCamera() {
         try {
-            let isMobile = this.isMobile();
-            let height = isMobile ? window.innerHeight * 0.7 : 720; // Adjust height for mobile
-            let width = isMobile ? window.innerWidth * 0.9 : 540;  // Adjust width for mobile
-
             const constraints = {
                 video: {
-                    facingMode: isMobile ? { exact: "environment" } : "user", // Back camera for mobile, front for laptop
-                    width: { ideal: width },
-                    height: { ideal: height }
+                    facingMode: "user",
+                    width: { ideal: 540 },
+                    height: { ideal: 720 }
                 }
             };
 
             this.stream = await navigator.mediaDevices.getUserMedia(constraints);
             this.videoTarget.srcObject = this.stream;
-
-            // Adjust video size
-            this.videoTarget.style.width = `${width}px`;
-            this.videoTarget.style.height = `${height}px`;
             this.videoTarget.style.display = "block";
-
-            // Hide captured image
             this.previewTarget.style.display = "none";
             this.captureBtnTarget.textContent = "Capture Image";
 
@@ -46,7 +46,7 @@ export default class extends Controller {
 
         } catch (error) {
             console.error("Error accessing camera:", error);
-            alert("Could not access the camera. Try allowing camera access in your settings.");
+            alert("Could not access the camera. Allow camera access in your browser settings.");
         }
     }
 
@@ -60,19 +60,29 @@ export default class extends Controller {
         this.previewTarget.src = imageData;
         this.imageDataTarget.value = imageData;
 
-        // Show captured image, hide video
         this.previewTarget.style.display = "block";
         this.videoTarget.style.display = "none";
 
-        // Stop camera stream
         this.stream.getTracks().forEach(track => track.stop());
 
-        // Change button text to allow retake
         this.captureBtnTarget.textContent = "Retake Image";
         this.cameraOpen = false;
     }
 
+    handleFileInput(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                this.previewTarget.src = e.target.result;
+                this.imageDataTarget.value = e.target.result;
+                this.previewTarget.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
     isMobile() {
-        return window.matchMedia("(max-width: 768px)").matches;
+        return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     }
 }

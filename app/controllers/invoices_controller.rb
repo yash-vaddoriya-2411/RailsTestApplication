@@ -11,26 +11,30 @@ class InvoicesController < ApplicationController
 
   def create
     result = InvoiceService.new(params).call
-  
+
     if result[:success]
       flash.now[:notice] = result[:message]
-  
-      # Get the first invoice from the returned list (since multiple invoices can be created)
-      @invoice = result[:invoices].first
-  
+      @invoice = result[:invoices] # Ensure @invoice is set properly
+
       respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("invoice_form", partial: "invoices/success", locals: { invoice: @invoice }) }
-        format.html { redirect_to success_invoice_path(@invoice) } # Fallback for non-Turbo requests
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("invoice_form", partial: "invoices/success", locals: { invoices: @invoice }) }
+        format.html { redirect_to success_invoice_path(@invoice) }
       end
     else
       flash.now[:alert] = result[:message]
-  
+
+      # Initialize @invoice and @check to prevent NoMethodError
+      @invoice = Invoice.new
+      @check = Check.new
+
       respond_to do |format|
         format.turbo_stream { render turbo_stream: turbo_stream.replace("invoice_form", partial: "invoices/form") }
-        format.html { redirect_to new_invoice_path } # Fallback
+        format.html { redirect_to new_invoice_path }
       end
     end
   end
+
+
 
 
   def success

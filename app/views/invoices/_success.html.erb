@@ -1,18 +1,18 @@
 <turbo-frame id="invoice_form">
   <div class="container mt-5">
     <div class="card p-5 text-center shadow-lg" style="max-width: 500px; margin: auto;">
-      <h2><%= @check&.company&.name || "Company Name Not Available" %></h2>
-      <h3>Check <%= @check&.number || "N/A" %> Uploaded!</h3>
-  
+      <h2><%= invoices&.first.company&.name || "Company Name Not Available" %></h2>
+      <h3>Check <%= invoices.first.checks.pluck(:number) || "N/A" %> Uploaded!</h3>
+
       <div class="mt-3">
         <h1 class="display-1">😊</h1>
       </div>
-  
+
       <h4 class="mt-3">Invoices</h4>
       <h4>
-        <%= @check&.invoices&.any? ? @check.invoices.pluck(:number).join(", ") : "No Invoices Found" %>
+        <%= invoices.any? ? invoices.pluck(:number).join(", ") : "No Invoices Found" %>
       </h4>
-  
+    
       <div class="mt-4">
         <%= link_to "Upload New Check", new_invoice_path, class: "btn btn-dark px-4 py-3" %>
       </div>

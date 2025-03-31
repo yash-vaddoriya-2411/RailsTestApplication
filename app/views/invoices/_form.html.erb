@@ -1,5 +1,6 @@
 <%= stylesheet_link_tag "invoice" %>
 <%= javascript_include_tag "validation" %>
+<%= render "error_messages" %>
 <div class="container mt-5" data-controller="webcam">
   <h1 class="text-center mb-4">Capture Image</h1>
 
@@ -16,16 +17,25 @@
 
         <!-- Capture Button & Image Side by Side -->
         <div class="d-flex align-items-center justify-content-center mt-3">
+          <!-- Button for Desktop -->
           <%= button_tag "Capture Image",
                          class: "btn btn-outline-dark fw-bold px-4 py-3 border-3",
                          type: "button",
                          id: "captureBtn",
                          data: { action: "click->webcam#toggleCamera", webcam_target: "captureBtn" } %>
 
-          <!-- Captured Image Preview -->
+          <!-- File Input for Mobile -->
+          <input type="file" accept="image/*" capture="environment"
+                 id="fileInput"
+                 data-action="change->webcam#handleFileInput"
+                 data-webcam-target="fileInput"
+                 class="form-control"
+                 style="display: none;">
+
+          <!-- Image Preview -->
           <img id="preview"
                data-webcam-target="preview"
-               class="rounded border shadow" >
+               class="rounded border shadow">
         </div>
 
         <%= hidden_field_tag "check[image]", "", id: "image-data", data: { webcam_target: "imageData" }, required: true %>
