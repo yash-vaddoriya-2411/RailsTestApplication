@@ -3,7 +3,7 @@
 <div class="container mt-5" data-controller="webcam">
   <h1 class="text-center mb-4">Capture Image</h1>
 
-  <%= form_with model: [@invoice, @check], url: invoices_path, local: true, html: { multipart: true } do |f| %>
+  <%= form_with model: [@invoice, @check], url: invoices_path, local: true, html: { multipart: true, onsubmit: "showLoader()" } do |f| %>
     <div class="card p-4 shadow-lg">
       <div class="d-flex flex-column align-items-center text-center">
 
@@ -31,9 +31,7 @@
         <%= hidden_field_tag "check[image]", "", id: "image-data", data: { webcam_target: "imageData" }, required: true %>
       </div>
 
-
-
-    <div class="mb-3">
+      <div class="mb-3">
         <label class="form-label">Invoice Number</label>
         <%= f.text_area :invoice_number,
                         name: "invoice[number]",
@@ -64,7 +62,9 @@
                        id: "submitBtn",
                        type: "submit" %>
 
-        <div id="loading-spinner" class="spinner-border text-success" role="status" style="display: none;">
+        <!-- Loader -->
+        <div id="loading-spinner" class="spinner-border text-success" role="status" 
+            style="display: none; position: absolute; top: 50%; left: 50%;">
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>

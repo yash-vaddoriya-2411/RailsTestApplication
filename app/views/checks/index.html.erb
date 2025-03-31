@@ -6,20 +6,21 @@
     <th>Company</th>
     <th>Check Number</th>
     <th>Invoices</th>
-    <th>Image</th>
+    <th class="text-center">Image</th>
   </tr>
   </thead>
   <tbody>
   <% @checks.each do |check| %>
-    <tr>
-      <td><%= check.created_at.in_time_zone("Asia/Kolkata").strftime("%Y-%m-%d %I:%M:%S %p") %></td>
+    <tr class="align-middle">
+      <td><%= check.created_at.strftime("%Y-%m-%d %I:%M:%S %p") %></td>
       <td><%= check.company.name %></td>
       <td><%= check.number %></td>
       <td><%= check.invoices.pluck(:number).join(", ") %></td>
-      <td>
+      <td class="text-center">
         <% if check.image.attached? %>
-          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#imageModal-<%= check.id %>">
-            View Image
+          <button class="btn image-button " data-bs-toggle="modal" data-bs-target="#imageModal-<%= check.id %>">
+            <img src="<%= url_for(check.small_variant) %>" alt="Image">
+            <span class="hover-text"> Open Image</span>
           </button>
         <% else %>
           <span class="text-muted">No Image</span>
@@ -27,22 +28,21 @@
       </td>
     </tr>
 
-    <!-- Image Modal -->
+   <!-- Image Modal -->
     <div class="modal fade" id="imageModal-<%= check.id %>" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">Image Preview</h4>
-            <button type="button" class="close ms-auto" data-bs-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body text-center">
-            <img src="<%= url_for(check.image) %>" alt="Check Image" class="img-fluid rounded shadow">
+            <img src="<%= url_for(check.model_variant) %>" alt="Image">
           </div>
         </div>
       </div>
     </div>
+
   <% end %>
   </tbody>
 </table>

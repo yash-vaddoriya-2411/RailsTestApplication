@@ -5,4 +5,12 @@ class Check < ApplicationRecord
   has_many :invoices, through: :check_invoices
 
   validates :number, presence: true, uniqueness: true
+
+  def small_variant
+    image.variant(resize_to_fill: [ 60, 60 ]).processed
+  end
+
+  def model_variant
+    image.variant(resize_to_limit: [ nil, 600 ]).processed
+  end
 end
