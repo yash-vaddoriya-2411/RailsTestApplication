@@ -10,12 +10,12 @@ export default class extends Controller {
 
     async setupCamera() {
         try {
-            let height = this.isMobile() ? window.innerHeight * 0.8 : 720; // Increase height for a more rectangular shape
-            let width = this.isMobile() ? window.innerWidth * 0.6 : 480;  // Decrease width for a portrait-like aspect ratio
+            let height = this.isMobile() ? window.innerHeight * 0.9 : 720; // Adjust height for full screen
+            let width = this.isMobile() ? window.innerWidth * 0.9 : 480;  // Adjust width to match screen
 
             const constraints = {
                 video: {
-                    facingMode: this.isMobile() ? "environment" : "user", // Back camera for mobile, front for laptop
+                    facingMode: this.isMobile() ? "environment" : "user",
                     width: { ideal: width },
                     height: { ideal: height }
                 }
@@ -24,9 +24,13 @@ export default class extends Controller {
             this.stream = await navigator.mediaDevices.getUserMedia(constraints);
             this.videoTarget.srcObject = this.stream;
 
-            // Adjust video element size dynamically
-            this.videoTarget.style.width = `${width}px`;
-            this.videoTarget.style.height = `${height}px`;
+            // Set dynamic video size
+            this.videoTarget.style.width = "100%";
+            this.videoTarget.style.height = "auto"; // Maintain aspect ratio
+
+            // Make sure the modal fills the screen
+            this.videoTarget.parentElement.style.width = "100%";
+            this.videoTarget.parentElement.style.height = "100vh";
 
             // Show camera, hide preview and retake button
             this.videoTarget.style.display = "block";
@@ -37,6 +41,7 @@ export default class extends Controller {
             console.error("Error accessing camera:", error);
         }
     }
+
 
 
     isMobile() {

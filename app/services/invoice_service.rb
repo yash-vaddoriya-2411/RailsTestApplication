@@ -1,5 +1,5 @@
-# app/services/check_creation_service.rb
-class CheckCreationService
+# app/services/invoice_service.rb
+class InvoiceService
   def initialize(params)
     @params = params
     @invoice_numbers = extract_invoice_numbers
