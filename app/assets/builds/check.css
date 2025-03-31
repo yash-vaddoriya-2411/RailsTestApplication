@@ -15,28 +15,45 @@
     position: relative;
     background: transparent;
     padding: 0;
-    width: 90%;
-    height: 90%;
-    max-width: 1200px;
+    width: 95%;
+    height: 95%;
+    max-width: 1400px; /* Increased max width */
+    max-height: 90vh; /* Prevents it from getting too tall */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+/* Enlarged image with brightness */
 #fullImage {
-    max-width: 100%;
-    max-height: 100%;
+    width: 90%; /* Increase image size */
+    height: auto;
+    max-width: 1200px; /* Ensures large but not full screen */
+    max-height: 85vh; /* Controls max height */
     object-fit: contain;
-    border-radius: 4px;
+    border-radius: 8px;
+
+    /* Increase brightness for better visibility */
+    filter: brightness(1.4);
 }
 
+/* Adds dark background effect around the image */
+.modal-image-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px; /* Space around the image */
+}
+
+/* Close button positioned near the image */
 .modal .close {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 28px;
-    width: 40px;
-    height: 40px;
+    top: -30px; /* Moves slightly above the image */
+    right: 60px; /* Moves slightly to the right */
+    font-size: 45px;
+    width: 35px;
+    height: 35px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -49,7 +66,19 @@
     transition: all 0.2s ease;
 }
 
+/* Close button hover effect */
 .modal .close:hover {
     background: rgba(0, 0, 0, 0.9);
     transform: scale(1.1);
+}
+
+/* Ensuring close button is inside the modal-image-container */
+.modal-image-container {
+    position: relative;
+}
+
+/* Moves the close button near the image */
+.modal-image-container .close {
+    top: 10px;
+    right: 10px;
 }

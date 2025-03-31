@@ -11,18 +11,13 @@
 </head>
 <body>
 
-  <div class="navbar navbar-light" data-bs-theme="light">
-  <div class="container-fluid">
-    <%= link_to "Capture", new_invoice_path, class: "nav-link col-xxl-3" %>
-    <%= link_to "Checks", checks_path, class: "nav-link col-xxl-3" %>
-    <%= link_to "Invoices", invoices_path, class: "nav-link col-xxl-3" %>
-    <%= link_to "Companies", companies_path, class: "nav-link col-xxl-3" %>
-    </div>
-  </div>
-  <% flash.each do |type, message| %>
-      <p style="color: <%= type == 'notice' ? 'green' : 'red' %>; font-weight: bold;">
-        <%= message %>
-      </p>
+  <%= render "layouts/navbar" %>
+  <% if flash[:notice] %>
+    <div class="alert alert-success"><%= flash[:notice] %></div>
+  <% end %>
+
+  <% if flash[:alert] %>
+    <div class="alert alert-danger"><%= flash[:alert] %></div>
   <% end %>
 
 <!-- Page Content -->
