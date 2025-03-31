@@ -13,7 +13,11 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   root "invoices#new"
-  resources :invoices
+  resources :invoices do
+    member do
+      get "success"
+    end
+  end
   resources :checks
   resources :companies
 end
