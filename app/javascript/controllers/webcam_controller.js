@@ -1,21 +1,30 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-    static targets = ["video", "canvas", "captureBtn", "retakeBtn", "preview", "imageData"]
+    static targets = ["video", "canvas", "captureBtn", "preview", "imageData"]
 
     connect() {
         console.log("Webcam Stimulus controller connected.");
-        this.setupCamera();
+        this.cameraOpen = false;
     }
 
-    async setupCamera() {
+    async toggleCamera() {
+        if (!this.cameraOpen) {
+            await this.startCamera();
+        } else {
+            this.captureImage();
+        }
+    }
+
+    async startCamera() {
         try {
-            let height = this.isMobile() ? window.innerHeight * 0.8 : 720; // Increase height for a more rectangular shape
-            let width = this.isMobile() ? window.innerWidth * 0.6 : 480;  // Decrease width for a portrait-like aspect ratio
+            let isMobile = this.isMobile();
+            let height = isMobile ? window.innerHeight * 0.7 : 720; // Increase height for mobile
+            let width = isMobile ? window.innerWidth * 0.9 : 540;  // Increase width for mobile
 
             const constraints = {
                 video: {
-                    facingMode: this.isMobile() ? "environment" : "user", // Back camera for mobile, front for laptop
+                    facingMode: isMobile ? "environment" : "user",
                     width: { ideal: width },
                     height: { ideal: height }
                 }
@@ -24,53 +33,45 @@ export default class extends Controller {
             this.stream = await navigator.mediaDevices.getUserMedia(constraints);
             this.videoTarget.srcObject = this.stream;
 
-            // Adjust video element size dynamically
+            // Dynamically adjust size
             this.videoTarget.style.width = `${width}px`;
             this.videoTarget.style.height = `${height}px`;
-
-            // Show camera, hide preview and retake button
             this.videoTarget.style.display = "block";
+
+            // Hide captured image
             this.previewTarget.style.display = "none";
-            this.retakeBtnTarget.style.display = "none";
+            this.captureBtnTarget.textContent = "Capture Image";
+
+            this.cameraOpen = true;
 
         } catch (error) {
             console.error("Error accessing camera:", error);
         }
     }
 
-
-    isMobile() {
-        return /Mobi|Android/i.test(navigator.userAgent);
-    }
-
     captureImage() {
         const context = this.canvasTarget.getContext("2d");
         this.canvasTarget.width = this.videoTarget.videoWidth;
         this.canvasTarget.height = this.videoTarget.videoHeight;
-
-        // Draw image from video stream
         context.drawImage(this.videoTarget, 0, 0, this.canvasTarget.width, this.canvasTarget.height);
+
         const imageData = this.canvasTarget.toDataURL("image/jpeg");
-
-        // Display captured image
         this.previewTarget.src = imageData;
-        this.previewTarget.style.display = "block";
-        this.imageDataTarget.value = imageData; // Store image in hidden input for form submission
+        this.imageDataTarget.value = imageData;
 
-        // Hide video and capture button, show retake button
+        // Show captured image, hide video
+        this.previewTarget.style.display = "block";
         this.videoTarget.style.display = "none";
-        this.captureBtnTarget.style.display = "none";
-        this.retakeBtnTarget.style.display = "inline-block";
+
+        // Stop camera stream
+        this.stream.getTracks().forEach(track => track.stop());
+
+        // Change button text to allow retake
+        this.captureBtnTarget.textContent = "Retake Image";
+        this.cameraOpen = false;
     }
 
-    retakeImage() {
-        // Show video and capture button, hide captured image and retake button
-        this.videoTarget.style.display = "block";
-        this.captureBtnTarget.style.display = "inline-block";
-        this.previewTarget.style.display = "none";
-        this.retakeBtnTarget.style.display = "none";
-
-        // Restart camera stream
-        this.setupCamera();
+    isMobile() {
+        return window.matchMedia("(max-width: 768px)").matches;
     }
 }

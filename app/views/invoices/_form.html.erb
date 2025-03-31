@@ -8,31 +8,34 @@
       <div class="d-flex flex-column align-items-center text-center">
 
         <!-- Camera Preview -->
-        <video id="video" data-webcam-target="video" autoplay playsinline ></video>
-        <canvas id="canvas" data-webcam-target="canvas"></canvas>
+        <video id="video"
+               data-webcam-target="video"
+               autoplay
+               playsinline
+               style="display: none; border-radius: 10px; object-fit: cover;"></video>
+        <canvas id="canvas" data-webcam-target="canvas" style="display: none;"></canvas>
 
-        <!-- Captured Image Preview -->
-        <img id="preview" data-webcam-target="preview" class="rounded border">
+        <!-- Capture Button & Image Side by Side -->
+        <div class="d-flex align-items-center justify-content-center mt-3">
+          <%= button_tag "Capture Image",
+                         class: "btn btn-outline-dark fw-bold px-4 py-3 border-3",
+                         type: "button",
+                         id: "captureBtn",
+                         data: { action: "click->webcam#toggleCamera", webcam_target: "captureBtn" },
+                         style: "font-size: 1.5rem; border-radius: 10px; margin-right: 10px;" %>
 
-        <!-- Capture Button -->
-        <%= button_tag "Capture Image",
-                       class: "btn btn-primary mt-3",
-                       type: "button",
-                       id: "captureBtn",
-                       data: { action: "click->webcam#captureImage", webcam_target: "captureBtn" } %>
-
-        <!-- Retake Button (Initially Hidden) -->
-        <%= button_tag "Retake Image",
-                       class: "btn btn-warning mt-3",
-                       type: "button",
-                       id: "retakeBtn",
-                       data: { action: "click->webcam#retakeImage", webcam_target: "retakeBtn" },
-                       style: "display: none;" %>
+          <!-- Captured Image Preview -->
+          <img id="preview"
+               data-webcam-target="preview"
+               class="rounded border shadow"
+               style="width: 80px; height: 80px; display: none; object-fit: cover;">
+        </div>
 
         <%= hidden_field_tag "check[image]", "", id: "image-data", data: { webcam_target: "imageData" }, required: true %>
       </div>
 
-      <div class="mb-3">
+
+    <div class="mb-3">
         <label class="form-label">Invoice Number</label>
         <%= f.text_area :invoice_number,
                         name: "invoice[number]",

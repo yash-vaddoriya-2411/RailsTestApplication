@@ -10,7 +10,7 @@ class InvoicesController < ApplicationController
   end
 
   def create
-    result = CheckCreationService.new(params).call
+    result = InvoiceService.new(params).call
 
     if result[:success]
       flash[:notice] = result[:message]
