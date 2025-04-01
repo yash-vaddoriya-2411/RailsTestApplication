@@ -4,71 +4,71 @@
 <div class="container mt-5" data-controller="webcam">
   <h1 class="text-center mb-4">Capture Image</h1>
 
-  <%= form_with model: [@invoice, @check], url: invoices_path, local: true, html: { multipart: true, onsubmit: "showLoader()" } do |f| %>
-    <div class="card p-4 shadow-lg">
-      <div class="d-flex flex-column align-items-center text-center">
+  <%= form_with model: [@invoice, @check], url: invoices_path, local: true, html: { multipart: true }, data: { action: "submit->webcam#showLoader" } do |f| %>
+  <div class="card p-4 shadow-lg">
+        <div class="d-flex flex-column align-items-center text-center">
 
-        <!-- Camera Preview -->
-        <video id="video"
-               data-webcam-target="video"
-               autoplay
-               playsinline ></video>
-        <canvas id="canvas" data-webcam-target="canvas"></canvas>
+          <!-- Camera Preview -->
+          <video id="video"
+                 data-webcam-target="video"
+                 autoplay
+                 playsinline ></video>
+          <canvas id="canvas" data-webcam-target="canvas"></canvas>
 
-        <!-- Capture Button & Image Side by Side -->
-        <div class="d-flex align-items-center justify-content-center mt-3">
-          <%= button_tag "Capture Image",
+          <!-- Capture Button & Image Side by Side -->
+          <div class="d-flex align-items-center justify-content-center mt-3">
+            <%= button_tag "Capture Image",
+                           class: "btn btn-outline-dark fw-bold px-4 py-3 border-3",
+                           type: "button",
+                           id: "captureBtn",
+                           data: { action: "click->webcam#toggleCamera", webcam_target: "captureBtn" } %>
+
+            <!-- Captured Image Preview -->
+            <img id="preview"
+                 data-webcam-target="preview"
+                 class="rounded border shadow" >
+          </div>
+
+          <%= hidden_field_tag "check[image]", "", id: "image-data", data: { webcam_target: "imageData" }, required: true %>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Invoice Number</label>
+          <%= f.text_area :invoice_number,
+                          name: "invoice[number]",
+                          placeholder: "Enter Invoice Number",
+                          required: true,
+                          class: "form-control" %>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Company</label>
+          <%= f.select :company_id, Company.all.collect { |c| [c.name, c.id] },
+                       { prompt: "Select Company" },
+                       { class: "form-select", required: true } %>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Check Number</label>
+          <%= f.number_field :check_number,
+                           name: "check[number]",
+                           placeholder: "Enter Check Number",
+                           required: true,
+                           class: "form-control" %>
+        </div>
+
+        <div class="text-center">
+          <%= button_tag "Submit",
                          class: "btn btn-outline-dark fw-bold px-4 py-3 border-3",
-                         type: "button",
-                         id: "captureBtn",
-                         data: { action: "click->webcam#toggleCamera", webcam_target: "captureBtn" } %>
+                         id: "submitBtn",
+                         type: "submit" %>
 
-          <!-- Captured Image Preview -->
-          <img id="preview"
-               data-webcam-target="preview"
-               class="rounded border shadow" >
-        </div>
-
-        <%= hidden_field_tag "check[image]", "", id: "image-data", data: { webcam_target: "imageData" }, required: true %>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Invoice Number</label>
-        <%= f.text_area :invoice_number,
-                        name: "invoice[number]",
-                        placeholder: "Enter Invoice Number",
-                        required: true,
-                        class: "form-control" %>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Company</label>
-        <%= f.select :company_id, Company.all.collect { |c| [c.name, c.id] },
-                     { prompt: "Select Company" },
-                     { class: "form-select", required: true } %>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Check Number</label>
-        <%= f.number_field :check_number,
-                         name: "check[number]",
-                         placeholder: "Enter Check Number",
-                         required: true,
-                         class: "form-control" %>
-      </div>
-
-      <div class="text-center">
-        <%= button_tag "Submit",
-                       class: "btn btn-outline-dark fw-bold px-4 py-3 border-3",
-                       id: "submitBtn",
-                       type: "submit" %>
-
-        <!-- Loader -->
-        <div id="loading-spinner" class="spinner-border text-success" role="status"
-             style="display: none; position: absolute; top: 50%; left: 50%;">
-          <span class="visually-hidden">Loading...</span>
+          <!-- Loader -->
+          <div id="loading-spinner" class="spinner-border text-success" role="status"
+               style="display: none; position: absolute; top: 50%; left: 50%;">
+            <span class="visually-hidden">Loading...</span>
+          </div>
         </div>
       </div>
-    </div>
   <% end %>
 </div>

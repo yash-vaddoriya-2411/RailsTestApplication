@@ -15,7 +15,7 @@ class InvoicesController < ApplicationController
     if result[:success]
       flash.now[:notice] = result[:message]
       @invoice = result[:invoices] # Ensure @invoice is set properly
-
+      puts @invoice.inspect
       respond_to do |format|
         format.turbo_stream { render turbo_stream: turbo_stream.replace("invoice_form", partial: "invoices/success", locals: { invoices: @invoice }) }
         format.html { redirect_to success_invoice_path(@invoice) }

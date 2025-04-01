@@ -20,8 +20,3 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
-
-function showLoader() {
-    document.getElementById("loading-spinner").style.display = "inline-block";
-    document.getElementById("submitBtn").disabled = true; // Disable submit button
-  }

@@ -86,4 +86,15 @@ export default class extends Controller {
     isMobile() {
         return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     }
+
+    showLoader(event) {
+        // Show the loading spinner immediately
+        document.getElementById("loading-spinner").style.display = "inline-block";
+
+        // Delay disabling inputs slightly to ensure Turbo has already processed the form data
+        requestAnimationFrame(() => {
+            this.element.querySelectorAll("input, select, textarea, button").forEach(el => el.disabled = true);
+        });
+    }
+
 }
